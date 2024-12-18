@@ -10,13 +10,11 @@
 }:
 let
   mods' = builtins.map
-    (mod:
-      if !(lib.pathIsDirectory mod) then
-        (runCommandLocal "${mod.name}-dirwrapper" { } ''
-          mkdir -p "$out"
-          ln -s ${mod} "$out/${mod.name}"
-        '')
-      else mod)
+    mod:
+      runCommandLocal "${mod.name}-dirwrapper" { } ''
+        mkdir -p "$out"
+        ln -s ${mod} "$out/${mod.name}"
+      ''
     mods;
 
   defaults = {
